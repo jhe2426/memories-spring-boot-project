@@ -1,5 +1,7 @@
 package com.jhe.memories_back.common.entity;
 
+import com.jhe.memories_back.common.dto.request.auth.SignUpRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -25,4 +27,13 @@ public class UserEntity {
     private String profileImage;
     private String gender;
     private Integer age;
+
+    public UserEntity(SignUpRequestDto dto, String encodedPassword) {
+        this.userId = dto.getUserId();
+        this.userPassword = encodedPassword;
+        this.name = dto.getName();
+        this.address = dto.getAddress();
+        this.detailAddress = dto.getDetailAddress();
+        this.joinType = dto.getJoinType();
+    }
 }

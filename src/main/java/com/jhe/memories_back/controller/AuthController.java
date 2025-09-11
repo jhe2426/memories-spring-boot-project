@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jhe.memories_back.common.dto.request.auth.IdCheckRequestDto;
+import com.jhe.memories_back.common.dto.request.auth.SignUpRequestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
 import com.jhe.memories_back.service.AuthService;
 
@@ -28,4 +29,12 @@ public class AuthController {
         ResponseEntity<ResponseDto> response = authService.idCheck(requestBody);
         return response;
     }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<ResponseDto> signUp(
+        @RequestBody @Valid SignUpRequestDto requestBody
+    ) {
+        ResponseEntity<ResponseDto> response = authService.signUp(requestBody);
+        return response;
+    }   
 }
