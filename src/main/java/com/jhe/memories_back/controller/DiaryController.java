@@ -3,6 +3,7 @@ package com.jhe.memories_back.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jhe.memories_back.common.dto.request.diary.PostDiaryRquestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
+import com.jhe.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.jhe.memories_back.service.DiaryService;
 
@@ -37,6 +39,14 @@ public class DiaryController {
         @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super GetMyDiaryResponseDto> response = diaryService.getMyDiary(userId);
+        return response;
+    }
+
+    @GetMapping("{diaryNumber}")
+    public ResponseEntity<? super GetDiaryResponseDto> getDiary(
+        @PathVariable("diaryNumber") Integer diaryNumber
+    ) {
+        ResponseEntity<? super GetDiaryResponseDto> response = diaryService.getDiary(diaryNumber);
         return response;
     }
 }

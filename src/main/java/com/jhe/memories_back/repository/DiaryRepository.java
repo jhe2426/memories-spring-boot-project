@@ -10,6 +10,7 @@ import com.jhe.memories_back.common.entity.DiaryEntity;
 @Repository
 public interface DiaryRepository extends JpaRepository<DiaryEntity, Integer> {
 
-    List<DiaryEntity> findByUserId(String userId);
+    DiaryEntity findByDiaryNumber(Integer diaryNumber);
     
+    List<DiaryEntity> findByUserId(String userId);
 }

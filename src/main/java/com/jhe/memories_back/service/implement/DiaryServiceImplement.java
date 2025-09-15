@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.jhe.memories_back.common.dto.request.diary.PostDiaryRquestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
+import com.jhe.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.jhe.memories_back.common.entity.DiaryEntity;
 import com.jhe.memories_back.repository.DiaryRepository;
@@ -55,5 +56,24 @@ public class DiaryServiceImplement implements DiaryService {
         return GetMyDiaryResponseDto.success(diaryEntities);
     }
 
-    
+
+    @Override
+    public ResponseEntity<? super GetDiaryResponseDto> getDiary(Integer diaryNumber) {
+
+        DiaryEntity diaryEntity = null;
+
+        try {
+
+            diaryEntity = diaryRepository.findByDiaryNumber(diaryNumber);
+            if (diaryEntity == null) return ResponseDto.noExistDiary();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetDiaryResponseDto.success(diaryEntity);
+
+    }
+
 }
