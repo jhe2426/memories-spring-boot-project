@@ -1,11 +1,15 @@
 package com.jhe.memories_back.service.implement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jhe.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
+import com.jhe.memories_back.common.dto.response.test.GetMemoryResponseDto;
 import com.jhe.memories_back.common.entity.MemoryTestEntity;
 import com.jhe.memories_back.repository.MemoryTestRepository;
 import com.jhe.memories_back.service.TestService;
@@ -42,5 +46,21 @@ public class TestServiceImplement implements TestService {
         return ResponseDto.success(HttpStatus.CREATED);
     }
 
-    
+
+    @Override
+    public ResponseEntity<? super GetMemoryResponseDto> getMemory(String uesrId) {
+        List<MemoryTestEntity> memoryTestEntities = new ArrayList<>();
+        
+        try {
+            
+            memoryTestEntities = memoryTestRepository.findByUserIdOrderBySequenceDesc(uesrId);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetMemoryResponseDto.success(memoryTestEntities);
+    }
+
 }
