@@ -16,5 +16,5 @@ public class PostConcentrationRequestDto {
 
     @NotNull
     @Min(0)
-    private Integer errorScore;
+    private Integer errorCount;
 }

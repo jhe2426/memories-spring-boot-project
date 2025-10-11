@@ -38,7 +38,7 @@ public class ConcentrationTestEntity {
         this.userId = userId;
         this.sequence = 1;
         this.measurementScore = dto.getMeasurementScore();
-        this.errorCount = dto.getErrorScore();
+        this.errorCount = dto.getErrorCount();
         this.testDate = now.format(dateTimeFormatter);
     }
 
@@ -49,9 +49,9 @@ public class ConcentrationTestEntity {
         this.userId = userId;
         this.sequence = preEntity.getSequence() + 1;
         this.measurementScore = dto.getMeasurementScore();
-        this.errorCount = dto.getErrorScore();
+        this.errorCount = dto.getErrorCount();
         this.testDate = now.format(dateTimeFormatter);
         this.scoreGap = dto.getMeasurementScore() - preEntity.getMeasurementScore();
-        this.errorGap = dto.getErrorScore() - preEntity.getErrorCount();
+        this.errorGap = dto.getErrorCount() - preEntity.getErrorCount();
     }
 }
