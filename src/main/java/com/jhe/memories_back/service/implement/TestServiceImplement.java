@@ -7,10 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.jhe.memories_back.common.dto.request.test.PostConcentrationRequestDto;
 import com.jhe.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
 import com.jhe.memories_back.common.dto.response.test.GetMemoryResponseDto;
+import com.jhe.memories_back.common.entity.ConcentrationTestEntity;
 import com.jhe.memories_back.common.entity.MemoryTestEntity;
+import com.jhe.memories_back.repository.ConcentrationTestRepository;
 import com.jhe.memories_back.repository.MemoryTestRepository;
 import com.jhe.memories_back.service.TestService;
 
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class TestServiceImplement implements TestService {
 
     private final MemoryTestRepository memoryTestRepository;
+    private final ConcentrationTestRepository concentrationTestRepository;
     
     
     @Override
@@ -46,6 +50,29 @@ public class TestServiceImplement implements TestService {
         return ResponseDto.success(HttpStatus.CREATED);
     }
 
+    @Override
+    public ResponseEntity<ResponseDto> postConcentration(PostConcentrationRequestDto dto, String userId) {
+        
+        try {
+            ConcentrationTestEntity concentrationTestEntity = null;
+            
+            Integer preSequence = concentrationTestRepository.countByUserId(userId);
+
+            if (preSequence == 0) {
+                concentrationTestEntity = new ConcentrationTestEntity(dto, userId);
+            } else {
+                ConcentrationTestEntity preConcentrationTestEntity = concentrationTestRepository.findByUserIdAndSequence(userId, preSequence);
+                concentrationTestEntity = new ConcentrationTestEntity(dto, preConcentrationTestEntity, userId);
+            }
+
+            concentrationTestRepository.save(concentrationTestEntity);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success(HttpStatus.CREATED);
+    }
 
     @Override
     public ResponseEntity<? super GetMemoryResponseDto> getMemory(String uesrId) {
