@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.jhe.memories_back.common.dto.request.test.GetRecentlyMemoryResponseDto;
 import com.jhe.memories_back.common.dto.request.test.PostConcentrationRequestDto;
 import com.jhe.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
@@ -104,7 +105,26 @@ public class TestServiceImplement implements TestService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+
         return GetConcentrationResponseDto.success(concentrationTestEntities);
     }
+
+    @Override
+    public ResponseEntity<? super GetRecentlyMemoryResponseDto> getRecentlyMemory(String userId) {
+        List<MemoryTestEntity> memoryTestEntities = new ArrayList<>();
+
+        try {
+            
+            memoryTestEntities = memoryTestRepository.findTop10ByUserIdOrderBySequenceDesc(userId);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetRecentlyMemoryResponseDto.success(memoryTestEntities);
+    }
+
+    
 
 }

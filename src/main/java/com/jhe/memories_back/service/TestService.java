@@ -2,6 +2,7 @@ package com.jhe.memories_back.service;
 
 import org.springframework.http.ResponseEntity;
 
+import com.jhe.memories_back.common.dto.request.test.GetRecentlyMemoryResponseDto;
 import com.jhe.memories_back.common.dto.request.test.PostConcentrationRequestDto;
 import com.jhe.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
@@ -13,4 +14,5 @@ public interface TestService {
     ResponseEntity<ResponseDto> postConcentration(PostConcentrationRequestDto dto, String userId);
     ResponseEntity<? super GetMemoryResponseDto> getMemory(String uesrId);
     ResponseEntity<? super GetConcentrationResponseDto> getConcentration(String userId);
+    ResponseEntity<? super GetRecentlyMemoryResponseDto> getRecentlyMemory(String userId);
 }
