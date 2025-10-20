@@ -16,7 +16,6 @@ import com.jhe.memories_back.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-// class: //
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor

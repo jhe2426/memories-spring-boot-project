@@ -14,4 +14,5 @@ public interface ConcentrationTestRepository extends JpaRepository<Concentration
     Integer countByUserId(String userId);
     ConcentrationTestEntity findByUserIdAndSequence(String userId, Integer sequence);
     List<ConcentrationTestEntity> findByUserIdOrderBySequenceDesc(String userId);
+    List<ConcentrationTestEntity> findTop10ByUserIdOrderBySequenceDesc(String userId);
 }

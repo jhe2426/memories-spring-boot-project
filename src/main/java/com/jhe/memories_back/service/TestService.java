@@ -8,6 +8,7 @@ import com.jhe.memories_back.common.dto.request.test.PostMemoryRequestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
 import com.jhe.memories_back.common.dto.response.test.GetConcentrationResponseDto;
 import com.jhe.memories_back.common.dto.response.test.GetMemoryResponseDto;
+import com.jhe.memories_back.common.dto.response.test.GetRecentlyConcentrationResponseDto;
 
 public interface TestService {
     ResponseEntity<ResponseDto> postMemory(PostMemoryRequestDto dto, String userId);
@@ -15,4 +16,5 @@ public interface TestService {
     ResponseEntity<? super GetMemoryResponseDto> getMemory(String uesrId);
     ResponseEntity<? super GetConcentrationResponseDto> getConcentration(String userId);
     ResponseEntity<? super GetRecentlyMemoryResponseDto> getRecentlyMemory(String userId);
+    ResponseEntity<? super GetRecentlyConcentrationResponseDto> getRecentlyConcentration(String userId); 
 }
