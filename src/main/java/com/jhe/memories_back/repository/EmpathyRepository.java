@@ -9,4 +9,6 @@ import com.jhe.memories_back.common.entity.pk.EmpathyPk;
 @Repository
 public interface EmpathyRepository extends JpaRepository<EmpathyEntity, EmpathyPk> {
     
+    EmpathyEntity findByUserIdAndDiaryNumber(String userId, Integer diaryNumber);
+
 }

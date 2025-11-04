@@ -13,7 +13,9 @@ import com.jhe.memories_back.common.dto.response.ResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.jhe.memories_back.common.entity.DiaryEntity;
+import com.jhe.memories_back.common.entity.EmpathyEntity;
 import com.jhe.memories_back.repository.DiaryRepository;
+import com.jhe.memories_back.repository.EmpathyRepository;
 import com.jhe.memories_back.service.DiaryService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class DiaryServiceImplement implements DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final EmpathyRepository empathyRepository;
     
     @Override
     public ResponseEntity<ResponseDto> postDiary(PostDiaryRquestDto dto, String userId) {
@@ -119,5 +122,29 @@ public class DiaryServiceImplement implements DiaryService {
         return ResponseDto.success(HttpStatus.OK);
     }
 
-        
+    @Override
+    public ResponseEntity<ResponseDto> putEmpathy(Integer diaryNumber, String userId) {
+
+        try {
+            boolean isExistDiary = diaryRepository.existsByDiaryNumber(diaryNumber);
+            if(!isExistDiary) return ResponseDto.noExistDiary();
+
+            EmpathyEntity empathyEntity = empathyRepository.findByUserIdAndDiaryNumber(userId, diaryNumber);
+            if (empathyEntity == null) {
+                empathyEntity = new EmpathyEntity(userId, diaryNumber);
+                empathyRepository.save(empathyEntity);
+            } else {
+                empathyRepository.delete(empathyEntity);
+                return ResponseDto.success(HttpStatus.OK);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        // RESTful하게 작성하려면 생성을 하면 201을 반환해주고 삭제를 하면 200을 반환해주면 된다.
+        return ResponseDto.success(HttpStatus.CREATED);
+    }
+
 }
