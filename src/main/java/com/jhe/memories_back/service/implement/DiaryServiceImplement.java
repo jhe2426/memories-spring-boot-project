@@ -11,6 +11,7 @@ import com.jhe.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.jhe.memories_back.common.dto.request.diary.PostDiaryRquestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetDiaryResponseDto;
+import com.jhe.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.jhe.memories_back.common.entity.DiaryEntity;
 import com.jhe.memories_back.common.entity.EmpathyEntity;
@@ -121,6 +122,25 @@ public class DiaryServiceImplement implements DiaryService {
 
         return ResponseDto.success(HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<? super GetEmpathyResponseDto> getEmpathy(Integer diaryNumber) {
+
+        List<EmpathyEntity> empathyEntities = new ArrayList<>();
+
+        try {
+            DiaryEntity diaryEntity = diaryRepository.findByDiaryNumber(diaryNumber);
+            if (diaryEntity == null) return ResponseDto.noExistDiary();
+            
+            empathyEntities = empathyRepository.findByDiaryNumber(diaryNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetEmpathyResponseDto.success(empathyEntities);
+    }   
 
     @Override
     public ResponseEntity<ResponseDto> putEmpathy(Integer diaryNumber, String userId) {

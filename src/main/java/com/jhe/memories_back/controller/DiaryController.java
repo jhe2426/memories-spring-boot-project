@@ -16,6 +16,7 @@ import com.jhe.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.jhe.memories_back.common.dto.request.diary.PostDiaryRquestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetDiaryResponseDto;
+import com.jhe.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
 import com.jhe.memories_back.service.DiaryService;
 
@@ -71,6 +72,14 @@ public class DiaryController {
     ) {
         ResponseEntity<ResponseDto> resposne = diaryService.deleteDiary(diaryNumber, userId);
         return resposne;
+    }
+
+    @GetMapping("/{diaryNumber}/empathy")
+    public ResponseEntity<? super GetEmpathyResponseDto> getEmpathy(
+        @PathVariable("diaryNumber") Integer diaryNumber
+    ) {
+        ResponseEntity<? super GetEmpathyResponseDto> response = diaryService.getEmpathy(diaryNumber);
+        return response;
     }
 
     @PutMapping("/{diaryNumber}/empathy")
