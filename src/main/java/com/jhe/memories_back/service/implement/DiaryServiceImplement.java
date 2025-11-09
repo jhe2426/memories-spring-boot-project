@@ -8,18 +8,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jhe.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
+import com.jhe.memories_back.common.dto.request.diary.PostCommentRequestDto;
 import com.jhe.memories_back.common.dto.request.diary.PostDiaryRquestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
+import com.jhe.memories_back.common.entity.CommentEntity;
 import com.jhe.memories_back.common.entity.DiaryEntity;
 import com.jhe.memories_back.common.entity.EmpathyEntity;
+import com.jhe.memories_back.repository.CommentRepository;
 import com.jhe.memories_back.repository.DiaryRepository;
 import com.jhe.memories_back.repository.EmpathyRepository;
 import com.jhe.memories_back.service.DiaryService;
 
 import lombok.RequiredArgsConstructor;
+
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class DiaryServiceImplement implements DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final EmpathyRepository empathyRepository;
+    private final CommentRepository commentRepository;
     
     @Override
     public ResponseEntity<ResponseDto> postDiary(PostDiaryRquestDto dto, String userId) {
@@ -165,6 +170,25 @@ public class DiaryServiceImplement implements DiaryService {
 
         // RESTful하게 작성하려면 생성을 하면 201을 반환해주고 삭제를 하면 200을 반환해주면 된다.
         return ResponseDto.success(HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> postComment(PostCommentRequestDto dto, Integer diaryNumber, String userId) {
+        
+        try {
+            boolean isExistDiary = diaryRepository.existsByDiaryNumber(diaryNumber);
+            if(!isExistDiary) return ResponseDto.noExistDiary();
+
+            CommentEntity commentEntity = new CommentEntity(dto, diaryNumber, userId);
+            commentRepository.save(commentEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        
+        return ResponseDto.success(HttpStatus.CREATED);
+
     }
 
 }
