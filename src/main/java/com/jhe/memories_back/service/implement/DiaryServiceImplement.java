@@ -11,6 +11,7 @@ import com.jhe.memories_back.common.dto.request.diary.PatchDiaryRequestDto;
 import com.jhe.memories_back.common.dto.request.diary.PostCommentRequestDto;
 import com.jhe.memories_back.common.dto.request.diary.PostDiaryRquestDto;
 import com.jhe.memories_back.common.dto.response.ResponseDto;
+import com.jhe.memories_back.common.dto.response.diary.GetCommentResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetDiaryResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetEmpathyResponseDto;
 import com.jhe.memories_back.common.dto.response.diary.GetMyDiaryResponseDto;
@@ -118,6 +119,8 @@ public class DiaryServiceImplement implements DiaryService {
             boolean isWriter = writerId.equals(userId);
             if (!isWriter) return ResponseDto.noPermission();
 
+            empathyRepository.deleteByDiaryNumber(diaryNumber);
+            commentRepository.deleteByDiaryNumber(diaryNumber);
             diaryRepository.delete(diaryEntity);
             
         } catch (Exception exception) {
@@ -170,6 +173,26 @@ public class DiaryServiceImplement implements DiaryService {
 
         // RESTful하게 작성하려면 생성을 하면 201을 반환해주고 삭제를 하면 200을 반환해주면 된다.
         return ResponseDto.success(HttpStatus.CREATED);
+    }
+
+    
+
+    @Override
+    public ResponseEntity<? super GetCommentResponseDto> getComment(Integer diaryNumber) {
+        
+        List<CommentEntity> commentEntities = new ArrayList<>();
+
+        try {
+            
+            commentEntities = commentRepository.findByDiaryNumberOrderByWriteDateDesc(diaryNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetCommentResponseDto.success(commentEntities);
+
     }
 
     @Override
