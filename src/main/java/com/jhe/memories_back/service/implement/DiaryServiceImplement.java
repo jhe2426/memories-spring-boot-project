@@ -184,7 +184,7 @@ public class DiaryServiceImplement implements DiaryService {
 
         try {
             
-            commentEntities = commentRepository.findByDiaryNumberOrderByWriteDateDesc(diaryNumber);
+            commentEntities = commentRepository.findByDiaryNumberOrderByWriteDateAsc(diaryNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();
